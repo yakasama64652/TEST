@@ -11,7 +11,6 @@ body {
     background: linear-gradient(135deg, #eef2ff, #f8fafc);
 }
 
-/* TOPBAR */
 .topbar {
     background: linear-gradient(90deg, #0f172a, #1e293b);
     color: white;
@@ -19,7 +18,6 @@ body {
     font-weight: 600;
 }
 
-/* LAYOUT */
 .container {
     display: flex;
     height: calc(100vh - 60px);
@@ -31,8 +29,11 @@ body {
     background: #0f172a;
     color: #e2e8f0;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
+/* trainer buttons */
 .sidebar button {
     width: 100%;
     margin: 6px 0;
@@ -48,6 +49,29 @@ body {
     background: #ef4444;
 }
 
+/* NEW: TRAINER IMAGE AREA */
+.trainer-photo {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.trainer-photo img {
+    width: 100%;
+    max-width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid #ef4444;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.trainer-photo p {
+    margin-top: 8px;
+    color: #f8fafc;
+    font-weight: 600;
+}
+
 /* MAIN */
 .main {
     width: 75%;
@@ -60,10 +84,9 @@ body {
     padding: 18px;
     border-radius: 14px;
     margin-bottom: 20px;
-    border: 1px solid #e5e7eb;
 }
 
-/* INPUTS */
+/* INPUT */
 input, select {
     padding: 10px;
     margin: 8px 0;
@@ -122,7 +145,7 @@ button {
     opacity: 1;
 }
 
-/* MODALS */
+/* MODAL */
 .modal {
     position: fixed;
     top: 0;
@@ -171,6 +194,7 @@ button {
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h3>Trainer View</h3>
+
     <button onclick="switchTrainer('Au')">Au</button>
     <button onclick="switchTrainer('Chanie')">Chanie</button>
     <button onclick="switchTrainer('Leo')">Leo</button>
@@ -181,6 +205,12 @@ button {
 
     <h4>Search VA</h4>
     <input id="searchBox" onkeydown="handleSearch(event)">
+
+    <!-- TRAINER PHOTO DISPLAY -->
+    <div class="trainer-photo">
+        <img id="trainerImg" src="au.png" alt="Trainer Photo">
+        <p id="trainerName">Au</p>
+    </div>
 </div>
 
 <!-- MAIN -->
@@ -221,7 +251,7 @@ button {
     </div>
 </div>
 
-<!-- EDIT/MOVE MODAL -->
+<!-- EDIT MODAL -->
 <div id="editModal" class="modal">
     <div class="modal-box">
         <h3 id="editTitle"></h3>
@@ -255,6 +285,13 @@ let currentTrainer = "Au";
 let selectedIndex = null;
 let mode = "";
 
+/* TRAINER IMAGE MAP */
+const trainerImages = {
+    Au: "au.png",
+    Chanie: "chanie.png",
+    Leo: "leo.png"
+};
+
 /* SAVE */
 function save() {
     localStorage.setItem("va_data", JSON.stringify(trainers));
@@ -268,9 +305,16 @@ function toast(msg) {
     setTimeout(() => t.classList.remove("show"), 2000);
 }
 
+/* UPDATE TRAINER IMAGE */
+function updateTrainerPhoto() {
+    document.getElementById("trainerImg").src = trainerImages[currentTrainer];
+    document.getElementById("trainerName").innerText = currentTrainer;
+}
+
 /* SWITCH */
 function switchTrainer(t) {
     currentTrainer = t;
+    updateTrainerPhoto();
     render();
 }
 
@@ -298,6 +342,7 @@ function searchVA(q) {
         for (let i = 0; i < trainers[t].length; i++) {
             if (trainers[t][i].name.toLowerCase().includes(q)) {
                 currentTrainer = t;
+                updateTrainerPhoto();
                 render();
                 return;
             }
@@ -364,8 +409,6 @@ function openEditName() {
     document.getElementById("editTitle").innerText = "Edit Name";
     document.getElementById("modalName").style.display = "block";
     document.getElementById("modalAgency").style.display = "none";
-    document.getElementById("modalTrainer").style.display = "none";
-
     document.getElementById("modalName").value = va.name;
 
     document.getElementById("editModal").classList.add("active");
@@ -380,8 +423,6 @@ function openEditAgency() {
     document.getElementById("editTitle").innerText = "Edit Agency";
     document.getElementById("modalName").style.display = "none";
     document.getElementById("modalAgency").style.display = "block";
-    document.getElementById("modalTrainer").style.display = "none";
-
     document.getElementById("modalAgency").value = va.agency;
 
     document.getElementById("editModal").classList.add("active");
@@ -434,6 +475,7 @@ function closeEdit() {
 }
 
 /* INIT */
+updateTrainerPhoto();
 render();
 
 </script>
