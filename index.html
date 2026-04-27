@@ -196,16 +196,25 @@ body {
                 <div class="card admin-only">
                     <h3>Assign New VA</h3>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <input id="vaName" placeholder="VA Name" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
-                        <input id="agency" placeholder="Agency" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                        <input id="vaName" placeholder="VA Name" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1; min-width:150px;">
+                        <input id="agency" placeholder="Agency" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1; min-width:150px;">
                         
-                        <select id="vaShift" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
-                            <option value="08:00 AM - 05:00 PM">08:00 AM - 05:00 PM</option>
-                            <option value="09:00 AM - 06:00 PM">09:00 AM - 06:00 PM</option>
-                            <option value="10:00 AM - 07:00 PM">10:00 AM - 07:00 PM</option>
-                            <option value="10:00 PM - 07:00 AM">10:00 PM - 07:00 AM (Night)</option>
-                            <option value="Flexible">Flexible / Part-time</option>
-                        </select>
+                        <div style="flex:1; min-width:200px; display:flex; gap:5px;">
+                            <select id="vaShiftSelect" onchange="toggleCustomShift(this.value)" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                                <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
+                                <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                                <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                                <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                                <option value="12:00 PM - 01:00 PM">12:00 PM - 01:00 PM</option>
+                                <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+                                <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                                <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                                <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                                <option value="05:00 PM - 06:00 PM">05:00 PM - 06:00 PM</option>
+                                <option value="CUSTOM">Custom...</option>
+                            </select>
+                            <input id="vaCustomShift" placeholder="Enter Time" style="display:none; padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                        </div>
 
                         <select id="trainerSelect" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
                             <option>Au</option><option>Chanie</option><option>Leo</option>
@@ -300,6 +309,12 @@ function toast(msg) {
     setTimeout(() => t.classList.remove("show"), 2500);
 }
 
+/* ================= CUSTOM SHIFT TOGGLE ================= */
+function toggleCustomShift(val) {
+    const customInput = document.getElementById('vaCustomShift');
+    customInput.style.display = (val === 'CUSTOM') ? 'block' : 'none';
+}
+
 /* ================= AUTH ================= */
 function toggleAuth(type) {
     document.getElementById('loginCard').style.display = type === 'login' ? 'block' : 'none';
@@ -374,7 +389,7 @@ function render() {
                 <b>${va.name}</b><br>
                 <small style="color:#64748B">${va.agency}</small>
                 <div style="font-size:10px; color:var(--primary); font-weight:700; margin-top:8px; padding-top:5px; border-top:1px solid #F1F5F9;">
-                    ${va.shift || 'Flexible'}
+                    ${va.shift || 'No Time Set'}
                 </div>`;
             seat.onclick = () => handleSeatClick(i);
             filled++;
@@ -399,7 +414,6 @@ function handleSeatClick(index) {
             selectedIndices.push(index);
             updateSelectionUI();
         }
-        // Show modal for individual control
         if(selectedIndices.length === 1) {
             document.getElementById("actionModal").classList.add("active");
             document.getElementById("actionTitle").innerText = trainers[currentTrainer][index].name;
@@ -437,7 +451,6 @@ function renderSchedule() {
     document.getElementById('scheduleBody').innerHTML = `<tr>
         <td>${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td><td>${s[3]}</td><td>${s[4]}</td><td>${s[5]}</td>
     </tr>`;
-    // Pre-fill admin inputs
     document.getElementById('sMon').value = s[0];
     document.getElementById('sTue').value = s[1];
     document.getElementById('sWed').value = s[2];
@@ -468,24 +481,32 @@ function setStatus(s) {
 
 function assignVA() {
     let n = document.getElementById("vaName").value, 
-        a = document.getElementById("agency").value, 
-        s = document.getElementById("vaShift").value,
+        a = document.getElementById("agency").value,
         t = document.getElementById("trainerSelect").value;
     
-    if(!n || !a) return toast("Fill all fields");
+    // Get shift value: either dropdown or custom input
+    let sSelect = document.getElementById("vaShiftSelect").value;
+    let s = (sSelect === 'CUSTOM') ? document.getElementById("vaCustomShift").value : sSelect;
+    
+    if(!n || !a || (sSelect === 'CUSTOM' && !s)) return toast("Fill all fields");
     if(trainers[t].length >= 10) return toast("Class Full");
     
     trainers[t].push({name:n, agency:a, status:'active', shift:s});
     save(); render(); toast("VA Assigned");
+    
+    // Reset fields
     document.getElementById("vaName").value = ""; 
     document.getElementById("agency").value = "";
+    document.getElementById("vaCustomShift").value = "";
+    document.getElementById("vaShiftSelect").value = "08:00 AM - 09:00 AM";
+    toggleCustomShift("08:00 AM - 09:00 AM");
 }
 
 function openEditName() {
     let va = trainers[currentTrainer][selectedIndex];
     let n = prompt("Edit VA Name:", va.name);
     let ag = prompt("Edit Agency:", va.agency);
-    let sh = prompt("Edit Shift (e.g. 09:00 AM - 06:00 PM):", va.shift || "Flexible");
+    let sh = prompt("Edit Shift (e.g. 09:00 AM - 10:00 AM):", va.shift || "");
     
     if(n !== null && ag !== null) { 
         va.name = n || va.name; 
