@@ -8,13 +8,19 @@
 :root {
     --primary: #6366F1;
     --primary-hover: #4F46E5;
-    --bg-main: #F8FAFC;
+    /* Updated background to match sidebar */
+    --bg-main: #0F172A; 
     --sidebar-bg: #0F172A;
-    --text-dark: #1E293B;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    /* Updated text color for dark mode readability */
+    --text-dark: #F1F5F9; 
+    --text-muted: #94A3B8;
+    /* Cards now slightly lighter than background for depth */
+    --card-bg: #1E293B;
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     --status-active: #22C55E;
     --status-break: #EAB308;
     --status-help: #EF4444;
+    --border-color: #334155;
 }
 
 body {
@@ -36,23 +42,23 @@ body {
 }
 
 .auth-card {
-    background: white;
+    background: white; /* Keep login card white for contrast */
     padding: 40px;
     border-radius: 20px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
     text-align: center;
+    color: #1E293B; /* Ensure text inside login is dark */
 }
 
-/* Login/Signup Logo Style */
 .auth-logo {
     height: 60px;
     margin-bottom: 20px;
     object-fit: contain;
 }
 
-.auth-card h2 { margin-bottom: 10px; color: var(--text-dark); }
+.auth-card h2 { margin-bottom: 10px; color: #1E293B; }
 .auth-card input, .auth-card select { width: 100%; box-sizing: border-box; margin-bottom: 15px; padding: 12px; border-radius: 8px; border: 1px solid #CBD5E1; }
 .auth-card button { width: 100%; padding: 14px; margin-top: 10px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
@@ -60,14 +66,14 @@ body {
 #mainApp { display: none; }
 
 .topbar {
-    background: #FFFFFF;
-    color: var(--text-dark);
+    background: #1E293B; /* Darker Topbar */
+    color: white;
     padding: 12px 24px;
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 15px;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .logo { height: 35px; border-radius: 6px; }
@@ -81,6 +87,7 @@ body {
     padding: 24px;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid var(--border-color);
 }
 
 .sidebar h3 { color: #94A3B8; text-transform: uppercase; font-size: 12px; margin-bottom: 10px; margin-top: 20px; }
@@ -106,52 +113,59 @@ body {
 }
 
 .notes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; color: #94A3B8; }
-.notes-content { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; min-height: 50px; max-height: 100px; overflow-y: auto; word-wrap: break-word; color: #E2E8F0; margin-bottom: 8px; }
+.notes-content { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; min-height: 50px; max-height: 100px; overflow-y: auto; word-wrap: break-word; color: #E2E8F0; margin-bottom: 8px; }
 .notes-actions button { padding: 4px 8px; font-size: 10px; width: auto; display: inline-block; margin-right: 5px; }
 
-.main { flex-grow: 1; padding: 30px; overflow-y: auto; }
+.main { flex-grow: 1; padding: 30px; overflow-y: auto; background: var(--bg-main); }
 .admin-only { display: none; }
-.card { background: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: var(--card-shadow); }
+.card { background: var(--card-bg); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
 
-.sched-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-.sched-table th, .sched-table td { border: 1px solid #E2E8F0; padding: 15px; text-align: center; }
-.sched-table th { background: #F8FAFC; color: #64748B; font-size: 12px; text-transform: uppercase; }
-.sched-table td { font-weight: 500; color: var(--text-dark); }
+.sched-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--card-bg); color: var(--text-dark); }
+.sched-table th, .sched-table td { border: 1px solid var(--border-color); padding: 15px; text-align: center; }
+.sched-table th { background: #0F172A; color: var(--text-muted); font-size: 12px; text-transform: uppercase; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 20px; }
 
 .seat {
-    background: white; border-radius: 12px; padding: 15px; text-align: center;
-    cursor: pointer; border: 2px solid #E2E8F0; position: relative; min-height: 120px;
+    background: var(--card-bg); border-radius: 12px; padding: 15px; text-align: center;
+    cursor: pointer; border: 2px solid var(--border-color); position: relative; min-height: 120px;
     display: flex; flex-direction: column; justify-content: center; transition: 0.2s;
+    color: var(--text-dark);
 }
 
-.seat.selected { border: 2px solid var(--primary); background: #EEF2FF; }
+.seat.selected { border: 2px solid var(--primary); background: #312E81; }
 .seat-checkbox { position: absolute; top: 10px; left: 10px; width: 18px; height: 18px; cursor: pointer; z-index: 10; }
 
 .seat-menu-icon {
-    position: absolute; top: 6px; right: 28px; padding: 4px; font-size: 14px; color: #64748B;
+    position: absolute; top: 6px; right: 28px; padding: 4px; font-size: 14px; color: var(--text-muted);
     cursor: pointer; border-radius: 4px; transition: 0.2s; line-height: 1;
 }
-.seat-menu-icon:hover { background: #F1F5F9; color: var(--primary); }
+.seat-menu-icon:hover { background: #334155; color: var(--primary); }
 
-.status-dot { position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; }
+.status-dot { position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--card-bg); }
 .status-active { background: var(--status-active); }
 .status-break { background: var(--status-break); }
 .status-help { background: var(--status-help); }
 
 .selection-controls {
     display: none; align-items: center; gap: 15px;
-    background: #EEF2FF; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #C7D2FE;
+    background: #312E81; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--primary);
 }
 
-.toast { position: fixed; bottom: 30px; right: 30px; background: var(--sidebar-bg); color: white; padding: 16px 24px; border-radius: 12px; opacity: 0; transition: 0.4s; z-index: 9999; pointer-events: none; }
+.toast { position: fixed; bottom: 30px; right: 30px; background: #1E293B; border: 1px solid var(--primary); color: white; padding: 16px 24px; border-radius: 12px; opacity: 0; transition: 0.4s; z-index: 9999; pointer-events: none; }
 .toast.show { opacity: 1; }
 
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: none; align-items: center; justify-content: center; z-index: 10000; }
 .modal.active { display: flex; }
-.modal-box { background: white; width: 360px; padding: 30px; border-radius: 20px; text-align: center; }
+.modal-box { background: var(--card-bg); width: 360px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--border-color); color: white; }
 .modal-box button { width: 100%; margin: 8px 0; padding: 12px; border-radius: 8px; border: none; color: white; font-weight: 600; cursor: pointer; }
+
+/* Input field styling for dark mode */
+input, select {
+    background: #0F172A;
+    border: 1px solid var(--border-color);
+    color: white;
+}
 </style>
 </head>
 
@@ -189,7 +203,7 @@ body {
 <div id="mainApp">
     <div class="topbar">
         <img src="kling_20260422_VIDEO__1217_0.png" alt="Logo" class="logo">
-        <span>VA Classroom Dashboard Pro <small id="userRoleBadge" style="background:#E2E8F0; padding:2px 8px; border-radius:4px; font-size:10px; margin-left:10px;"></small></span>
+        <span>VA Classroom Dashboard Pro <small id="userRoleBadge" style="background:#475569; padding:2px 8px; border-radius:4px; font-size:10px; margin-left:10px; color:white;"></small></span>
     </div>
 
     <div class="container">
@@ -226,19 +240,19 @@ body {
         <div class="main">
             <div id="section-classroom">
                 <div id="selectionUI" class="selection-controls">
-                    <span id="selectedCount" style="font-weight:600; color:var(--primary);">0 selected</span>
+                    <span id="selectedCount" style="font-weight:600; color:white;">0 selected</span>
                     <button onclick="moveSelectedVAs()" style="background:var(--primary); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Move Selected</button>
-                    <button onclick="clearSelection()" style="background:#94A3B8; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Cancel</button>
+                    <button onclick="clearSelection()" style="background:#64748B; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Cancel</button>
                 </div>
 
                 <div class="card admin-only">
                     <h3>Assign New VA</h3>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <input id="vaName" placeholder="VA Name" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1; min-width:150px;">
-                        <input id="agency" placeholder="Agency" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1; min-width:150px;">
+                        <input id="vaName" placeholder="VA Name" style="padding:10px; border-radius:8px; flex:1; min-width:150px;">
+                        <input id="agency" placeholder="Agency" style="padding:10px; border-radius:8px; flex:1; min-width:150px;">
                         
                         <div style="flex:1; min-width:200px; display:flex; gap:5px;">
-                            <select id="vaShiftSelect" onchange="toggleCustomShift(this.value)" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                            <select id="vaShiftSelect" onchange="toggleCustomShift(this.value)" style="padding:10px; border-radius:8px; flex:1;">
                                 <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
                                 <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
                                 <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
@@ -251,10 +265,10 @@ body {
                                 <option value="05:00 PM - 06:00 PM">05:00 PM - 06:00 PM</option>
                                 <option value="CUSTOM">Custom...</option>
                             </select>
-                            <input id="vaCustomShift" placeholder="Enter Time" style="display:none; padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                            <input id="vaCustomShift" placeholder="Enter Time" style="display:none; padding:10px; border-radius:8px; flex:1;">
                         </div>
 
-                        <select id="trainerSelect" style="padding:10px; border-radius:8px; border:1px solid #CBD5E1; flex:1;">
+                        <select id="trainerSelect" style="padding:10px; border-radius:8px; flex:1;">
                             <option>Au</option><option>Chanie</option><option>Leo</option>
                         </select>
                         <button onclick="assignVA()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Assign VA</button>
@@ -273,7 +287,7 @@ body {
             <div id="section-schedule" style="display:none;">
                 <div class="card">
                     <h3>Weekly Class Schedule</h3>
-                    <p id="scheduleSub" style="color:#64748B; margin-top:-10px;">Viewing schedule for the selected trainer.</p>
+                    <p id="scheduleSub" style="color:var(--text-muted); margin-top:-10px;">Viewing schedule for the selected trainer.</p>
                     <table class="sched-table">
                         <thead>
                             <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat/Sun</th></tr>
@@ -285,12 +299,12 @@ body {
                 <div class="card admin-only">
                     <h3>Update Schedule (Admin)</h3>
                     <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:15px;">
-                        <div><label style="font-size:12px;">Mon</label><input id="sMon" placeholder="9AM - 5PM"></div>
-                        <div><label style="font-size:12px;">Tue</label><input id="sTue" placeholder="9AM - 5PM"></div>
-                        <div><label style="font-size:12px;">Wed</label><input id="sWed" placeholder="9AM - 5PM"></div>
-                        <div><label style="font-size:12px;">Thu</label><input id="sThu" placeholder="9AM - 5PM"></div>
-                        <div><label style="font-size:12px;">Fri</label><input id="sFri" placeholder="9AM - 5PM"></div>
-                        <div><label style="font-size:12px;">Weekend</label><input id="sSat" placeholder="OFF"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Mon</label><input id="sMon" placeholder="9AM - 5PM" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Tue</label><input id="sTue" placeholder="9AM - 5PM" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Wed</label><input id="sWed" placeholder="9AM - 5PM" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Thu</label><input id="sThu" placeholder="9AM - 5PM" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Fri</label><input id="sFri" placeholder="9AM - 5PM" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
+                        <div><label style="font-size:12px; color:var(--text-muted)">Weekend</label><input id="sSat" placeholder="OFF" style="width:100%; padding:10px; box-sizing:border-box; border-radius:8px;"></div>
                     </div>
                     <button onclick="saveSchedule()" style="background:var(--primary); color:white; border:none; padding:12px 24px; border-radius:8px; margin-top:20px; cursor:pointer; font-weight:600;">Save All Times</button>
                 </div>
@@ -313,7 +327,7 @@ body {
             <button onclick="openMove()" style="background:#8B5CF6">Move to Trainer</button>
             <button onclick="deleteVA()" style="background:#EF4444">Remove from Class</button>
         </div>
-        <div id="vaView" style="display:none; color: #64748B; padding: 20px;">Read-only mode. Trainers manage these profiles.</div>
+        <div id="vaView" style="display:none; color: var(--text-muted); padding: 20px;">Read-only mode. Trainers manage these profiles.</div>
         <button onclick="closeAction()" style="background:#64748B">Close</button>
     </div>
 </div>
@@ -429,9 +443,9 @@ function render() {
                 ${checkboxHtml}
                 ${menuIconHtml}
                 <div class="status-dot status-${va.status || 'active'}"></div>
-                <b>${va.name}</b><br>
-                <small style="color:#64748B">${va.agency}</small>
-                <div style="font-size:10px; color:var(--primary); font-weight:700; margin-top:8px; padding-top:5px; border-top:1px solid #F1F5F9;">
+                <b style="color:white">${va.name}</b><br>
+                <small style="color:var(--text-muted)">${va.agency}</small>
+                <div style="font-size:10px; color:var(--primary); font-weight:700; margin-top:8px; padding-top:5px; border-top:1px solid var(--border-color);">
                     ${va.shift || 'No Time Set'}
                 </div>`;
             
@@ -439,7 +453,7 @@ function render() {
             filled++;
         } else {
             seat.style.borderStyle = "dashed";
-            seat.innerHTML = "<span style='color:#CBD5E1'>Empty</span>";
+            seat.innerHTML = "<span style='color:#475569'>Empty</span>";
         }
         grid.appendChild(seat);
     }
